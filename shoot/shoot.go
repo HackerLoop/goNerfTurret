@@ -5,6 +5,9 @@ import (
 	"sync"
 
 	"github.com/kidoman/embd"
+	log "github.com/Sirupsen/logrus"
+
+	_ "github.com/kidoman/embd/host/rpi"
 )
 
 const trigger1 = 14
@@ -44,6 +47,7 @@ func outputPin(n int, value int) embd.DigitalPin {
 }
 
 func init() {
+	log.Info("Init Shooter")
 	embd.InitGPIO()
 
 	pinTrigger1 = outputPin(trigger1, embd.High)
@@ -66,6 +70,7 @@ func addToShoot(n int) {
 	toShootMutex.Lock()
 	defer toShootMutex.Unlock()
 
+	log.Infof("Shooting %d darts", n)
 	toShoot += n
 }
 
@@ -93,8 +98,8 @@ func awaitTriggerReturnValue(value int) {
 func startShooter() {
 	go func () {
 		for {
-
 			if (getToShoot() <= 0) {
+				time.Sleep(100 * time.Millisecond)
 				return
 			}
 

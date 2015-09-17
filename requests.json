@@ -1,0 +1,14 @@
+{
+  "type": "shoot",
+    "payload": {
+      "n": 1
+    }
+}
+
+{
+  "type": "orient",
+    "payload": {
+      "x": 0.5,
+      "y": 0.5,
+    }
+}

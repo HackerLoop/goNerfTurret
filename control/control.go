@@ -11,6 +11,8 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/mitchellh/mapstructure"
 	log "github.com/Sirupsen/logrus"
+
+	_ "github.com/kidoman/embd/host/rpi"
 )
 
 type Packet struct {
@@ -29,7 +31,7 @@ func Start(orientChan chan orient.Event, shootChan chan shoot.Event) {
 		},
 	}
 
-	http.HandleFunc("/uav", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/control", func(w http.ResponseWriter, r *http.Request) {
 		log.Debug("Connection received")
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
@@ -68,6 +70,6 @@ func Start(orientChan chan orient.Event, shootChan chan shoot.Event) {
 		}
 	})
 
-	go http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	go http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", port), nil)
 	log.Infof("Websocket server started on port %d", port)
 }

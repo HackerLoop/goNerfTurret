@@ -5,13 +5,15 @@ import (
 	"github.com/vitaminwater/turret/orient"
 	"github.com/vitaminwater/turret/shoot"
 
-	_ "github.com/kidoman/embd/host/rpi"
+	log "github.com/Sirupsen/logrus"
 )
 
 func main() {
 	orientChan := orient.Start()
 	shootChan := shoot.Start()
 	control.Start(orientChan, shootChan)
+
+	log.Info("All started")
 
 	select {}
 }
